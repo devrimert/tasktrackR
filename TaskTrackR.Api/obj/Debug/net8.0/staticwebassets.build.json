@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "8lyec40YFUCtRm134u32RyFnU17waYIggNcqgbxFUXY=",
+  "Source": "TaskTrackR.Api",
+  "BasePath": "_content/TaskTrackR.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
