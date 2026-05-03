@@ -3,8 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// swithced InMemory to PostgreSQL via Npgsql
 builder.Services.AddDbContext<AppDbContext>(opt =>
-    opt.UseInMemoryDatabase("TaskTrackRDb"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -21,6 +22,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapGet("/health", () => Results.Ok(new {status = "healty"}));
 app.MapControllers();
-app.MapGet("/test", () => "API working!");
 app.Run();
