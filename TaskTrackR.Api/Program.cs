@@ -1,4 +1,6 @@
 using TaskTrackR.Api.Data;
+using TaskTrackR.Api.Services;
+using TaskTrackR.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.CustomSchemaIds(type => type.FullName);
 });
+
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())

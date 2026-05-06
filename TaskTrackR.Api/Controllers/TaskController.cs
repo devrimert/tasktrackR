@@ -1,7 +1,6 @@
-using TaskTrackR.Api.Data;
 using TaskTrackR.Api.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using TaskTrackR.Api.Services.Interfaces;
 
 namespace TaskTrackR.Api.Controllers;
 
@@ -9,53 +8,39 @@ namespace TaskTrackR.Api.Controllers;
 [Route("api/[controller]")] 
 public class TasksController : ControllerBase
 {
-    private readonly AppDbContext _db;
+    private readonly ITaskService _taskService;
 
-    public TasksController(AppDbContext db) => _db = db;
+    public TasksController(ITaskService taskService) => _taskService = taskService;
 
     [HttpGet]
     public async Task<IActionResult> GetAll() =>
-        Ok(await _db.Tasks.ToListAsync());
+        Ok(await _taskService.GetAllAsync());
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var task = await _db.Tasks.FindAsync(id);
+        var task = await _taskService.GetByIdAsync(id);
         return task is null ? NotFound() : Ok(task);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(TaskItem task)
     {
-        _db.Tasks.Add(task);
-        await _db.SaveChangesAsync();
-        // Returns 201 Created with a Location header pointing to GET /api/tasks/{id}
-        return CreatedAtAction(nameof(GetById), new { id = task.Id }, task);
+        var created = await _taskService.CreateAsync(task);
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, TaskItem updated)
     {
-        var task = await _db.Tasks.FindAsync(id);
-        if (task is null) return NotFound();
-
-        task.Title       = updated.Title;
-        task.Description = updated.Description;
-        task.Status      = updated.Status;
-        task.Priority    = updated.Priority;
-
-        await _db.SaveChangesAsync();
-        return Ok(task);
+        var task = await _taskService.UpdateAsync(id, updated);
+        return task is null ? NotFound() : Ok(task);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var task = await _db.Tasks.FindAsync(id);
-        if (task is null) return NotFound();
-
-        _db.Tasks.Remove(task);
-        await _db.SaveChangesAsync();
-        return NoContent(); // 204 — success but nothing to return
+        var result = await _taskService.DeleteAsync(id);
+        return result ? NoContent() : NotFound();
     }
 }

@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./TaskTrackR.Api
+      dockerfile: Dockerfile.debug
+    image: tasktrackr-backend-debug:latest
+    container_name: tasktrackr-backend-debug
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+    ports:
+      - "5174:8080"
+      - "5005:5005"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - tasktrackr_default
+
+networks:
+  tasktrackr_default:
+    external: true
