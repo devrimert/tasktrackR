@@ -1,4 +1,6 @@
 using TaskTrackR.Api.Data;
+using TaskTrackR.Api.Services;
+using TaskTrackR.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,14 +16,20 @@ builder.Services.AddSwaggerGen(c =>
     c.CustomSchemaIds(type => type.FullName);
 });
 
-var app = builder.Build();
+builder.Services.AddScoped<ITaskService, TaskService>();
 
+var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.MapGet("/health", () => Results.Ok(new {status = "healty"}));
+app.MapGet("/health", () => Results.Ok(new {status = "healthy"}));
 app.MapControllers();
 app.Run();
