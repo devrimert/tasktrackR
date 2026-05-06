@@ -15,13 +15,17 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.MapGet("/health", () => Results.Ok(new {status = "healty"}));
+app.MapGet("/health", () => Results.Ok(new {status = "healthy"}));
 app.MapControllers();
 app.Run();
