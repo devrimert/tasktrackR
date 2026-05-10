@@ -1,4 +1,5 @@
 using TaskTrackR.Api.Models;
+using TaskTrackR.Api.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using TaskTrackR.Api.Services.Interfaces;
 
@@ -24,7 +25,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(TaskItem task)
+    public async Task<IActionResult> Create(CreateTaskRequest task)
     {
         var created = await _taskService.CreateAsync(task);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
@@ -33,15 +34,7 @@ public class TasksController : ControllerBase
     [HttpPatch("{id}")]
     public async Task<IActionResult> Patch(int id, PatchTaskRequest request)
     {
-        var task = await _taskService.GetByIdAsync(id);
-        if (task is null) return NotFound();
-
-        if (request.Title       is not null) task.Title       = request.Title;
-        if (request.Description is not null) task.Description = request.Description;
-        if (request.Status      is not null) task.Status      = request.Status.Value;
-        if (request.Priority    is not null) task.Priority    = request.Priority.Value;
-
-        var updated = await _taskService.UpdateAsync(id, task);
+        var updated = await _taskService.PatchAsync(id, request);
         return updated is null ? NotFound() : Ok(updated);
     }
 

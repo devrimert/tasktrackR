@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { TaskPriority } from "../types/task";
 import { createTask } from "../api/TaskApi";
 import styles from './CreateTaskForm.module.css';
+import ErrorMessage from './ErrorMessage';
 
 interface CreateTaskFormProps {
     onCreated: () => void;
@@ -11,18 +12,41 @@ export default function CreateTaskForm({ onCreated}: CreateTaskFormProps) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState<TaskPriority>('Medium');
+    const [errors, setErrors] = useState<string[]>([]);
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        await createTask({title, description, priority});
-        setTitle('');
-        setDescription('');
-        setPriority('Medium');
-        onCreated();
+        setErrors([]);
+
+        if(!title.trim()) {
+          setErrors(['Title is required.']);
+          return;
+        }
+
+        try{
+          await createTask({title, description, priority});
+          setTitle('');
+          setDescription('');
+          setPriority('Medium');
+          onCreated();
+        } catch (err:any) {
+          const data = err?.response?.data;
+
+          if (data?.errors) {
+            const allErrors = Object.values(data.errors).flat() as string[];
+            setErrors(allErrors);
+          } else {
+            setErrors([data?.error ?? 'Something went wrong.']);
+          }
+        }
+
+        
     };
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
           <h2 className={styles.title}>New Task</h2>
+
+           <ErrorMessage errors={errors} />
 
           <div className={styles.field}>
             <input
