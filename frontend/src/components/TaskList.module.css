@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.empty {
+  text-align: center;
+  color: #6b7280;
+  padding: 40px;
+  background: white;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+}
+
+.loading {
+  text-align: center;
+  color: #6b7280;
+  padding: 40px;
+}
+
+.error {
+  text-align: center;
+  color: #ef4444;
+  padding: 40px;
+  background: #fee2e2;
+  border-radius: 8px;
+}

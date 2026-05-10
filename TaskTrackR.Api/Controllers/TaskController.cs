@@ -30,6 +30,21 @@ public class TasksController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> Patch(int id, PatchTaskRequest request)
+    {
+        var task = await _taskService.GetByIdAsync(id);
+        if (task is null) return NotFound();
+
+        if (request.Title       is not null) task.Title       = request.Title;
+        if (request.Description is not null) task.Description = request.Description;
+        if (request.Status      is not null) task.Status      = request.Status.Value;
+        if (request.Priority    is not null) task.Priority    = request.Priority.Value;
+
+        var updated = await _taskService.UpdateAsync(id, task);
+        return updated is null ? NotFound() : Ok(updated);
+    }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, TaskItem updated)
     {

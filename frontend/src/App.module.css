@@ -1,0 +1,22 @@
+.container {
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 16px 24px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #6366f1;
+}
+
+.main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
