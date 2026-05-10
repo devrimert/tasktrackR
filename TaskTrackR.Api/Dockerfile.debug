@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /app
+
+#vsdbg debugger install
+RUN apt-get update && apt-get install -y curl unzip && \
+    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
+
+COPY TaskTrackR.Api.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet build -c Debug -o /app/build
+
+EXPOSE 8080
+EXPOSE 5005
+
+#run in debug mode
+ENTRYPOINT [ "dotnet", "/app/build/TaskTrackR.Api.dll" ]
