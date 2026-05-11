@@ -1,8 +1,10 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackR.Api", "TaskTrackR.Api.csproj", "{0DA032AA-31CA-3267-8BE6-F988E045F19F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackR.Tests", "..\TaskTrackR.Tests\TaskTrackR.Tests.csproj", "{A9149B9A-4083-4F66-8E1E-1EAC39F5B229}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,6 +16,10 @@ Global
 		{0DA032AA-31CA-3267-8BE6-F988E045F19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DA032AA-31CA-3267-8BE6-F988E045F19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DA032AA-31CA-3267-8BE6-F988E045F19F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9149B9A-4083-4F66-8E1E-1EAC39F5B229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9149B9A-4083-4F66-8E1E-1EAC39F5B229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9149B9A-4083-4F66-8E1E-1EAC39F5B229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9149B9A-4083-4F66-8E1E-1EAC39F5B229}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
