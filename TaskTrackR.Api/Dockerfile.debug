@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -y curl unzip && \
     curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
 
 COPY TaskTrackR.Api.csproj .
-RUN dotnet restore
+RUN dotnet restore TaskTrackR.Api.csproj
 COPY . .
-RUN dotnet build -c Debug -o /app/build
+RUN dotnet build TaskTrackR.Api.csproj -c Debug -o /app/build
 
 EXPOSE 8080
 EXPOSE 5005
